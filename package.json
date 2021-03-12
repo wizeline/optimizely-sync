@@ -1,0 +1,27 @@
+{
+  "bugs": {
+    "url": "https://github.com/wizeline/optimizely-sync/issues"
+  },
+  "dependencies": {
+  },
+  "description": "Infrastructure as Code for Optimizely",
+  "devDependencies": {
+  },
+  "homepage": "https://github.com/wizeline/optimizely-sync#readme",
+  "keywords": [
+    "optimizely",
+    "infrastructure",
+    "code",
+    "iac"
+  ],
+  "license": "ISC",
+  "main": "index.js",
+  "name": "@wizeline/optimizely-sync",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wizeline/optimizely-sync.git"
+  },
+  "scripts": {
+  },
+  "version": "0.0.0"
+}
