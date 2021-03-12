@@ -6,6 +6,7 @@
   },
   "description": "Infrastructure as Code for Optimizely",
   "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0"
   },
   "homepage": "https://github.com/wizeline/optimizely-sync#readme",
   "keywords": [
@@ -22,6 +23,7 @@
     "url": "git+https://github.com/wizeline/optimizely-sync.git"
   },
   "scripts": {
+    "commit": "cz"
   },
   "version": "0.0.0"
 }
