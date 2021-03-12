@@ -6,6 +6,8 @@
   },
   "description": "Infrastructure as Code for Optimizely",
   "devDependencies": {
+    "@commitlint/cli": "^12.0.1",
+    "@commitlint/config-conventional": "^12.0.1",
     "cz-conventional-changelog": "^3.3.0"
   },
   "homepage": "https://github.com/wizeline/optimizely-sync#readme",
