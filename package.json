@@ -3,6 +3,7 @@
     "url": "https://github.com/wizeline/optimizely-sync/issues"
   },
   "dependencies": {
+    "commander": "^7.1.0",
     "node-fetch": "^2.6.1",
     "ramda": "^0.27.1"
   },
