@@ -1,6 +1,6 @@
 # Optimizely Sync
 
-A pro
+Infrustructure as code for your Optimizely configuration.
 
 ## Getting started
 
