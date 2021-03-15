@@ -41,8 +41,9 @@
   "scripts": {
     "build": "rm -rf dist; tsc",
     "commit": "cz",
-    "lint": "npm run lint:eslint",
+    "lint": "npm run lint:eslint && npm run lint:prettier",
     "lint:eslint": "eslint . --ext .js,.ts --max-warnings=0",
+    "lint:prettier": "prettier --check .",
     "semantic-release": "semantic-release"
   },
   "version": "0.0.0-development"
