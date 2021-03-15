@@ -1,3 +1,11 @@
+## [1.0.1](https://github.com/wizeline/optimizely-sync/compare/v1.0.0...v1.0.1) (2021-03-15)
+
+
+### Bug Fixes
+
+* add #! to clie.js so it can be run without specifying node ([204756d](https://github.com/wizeline/optimizely-sync/commit/204756db80baca1e0a99decfab23ebd4c7ef7497))
+* add CHANGELOG.md to .prettierignore ([7ebb081](https://github.com/wizeline/optimizely-sync/commit/7ebb08162a8830f737e238d05f0795e3af5d3c79))
+
 # 1.0.0 (2021-03-15)
 
 
