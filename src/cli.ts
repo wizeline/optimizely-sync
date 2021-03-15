@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /* eslint-disable no-process-exit */
 import OptimizelyClient from './optimizely-client';
 import { Command } from 'commander';
