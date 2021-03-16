@@ -1,4 +1,5 @@
 .eslintrc.js
 commitlint.config.js
 dist/
+jest.config.ts
 node_modules/

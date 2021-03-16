@@ -9,6 +9,9 @@
 .prettierignore
 .prettierrc.js
 .releaserc
+/dist/**/*.test.*
 /src
 commitlint.config.*
+coverage/
+jest.config.*
 tsconfig.json
