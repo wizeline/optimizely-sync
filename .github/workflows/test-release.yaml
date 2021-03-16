@@ -37,7 +37,7 @@ jobs:
         run: npm run lint
 
       # Run tests
-      - name: Lint
+      - name: Test
         run: npm test
 
   release:
