@@ -85,27 +85,3 @@ describe('optimizely-sync-config-helpers', () => {
     });
   });
 });
-
-/*
-export const findUndeployedFeatures = (
-  config: OptimizelySyncConfig,
-  features: Feature[],
-): string[] => {
-  const configFeatures = getConfigFeatureKeys(config)[0];
-  const deployedFeatures = getOptimizelyFeatureKeys(features);
-
-  return difference(configFeatures, deployedFeatures);
-};
-
-export const findUnconfiguredFeatures = (
-  config: OptimizelySyncConfig,
-  features: Feature[],
-): string[] => {
-  const configFeatures = getConfigFeatureKeys(config)[0];
-  const deployedFeatures = getOptimizelyFeatureKeys(
-    features.filter((feature) => !feature.archived),
-  );
-
-  return difference(deployedFeatures, configFeatures);
-};
-*/
