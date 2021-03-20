@@ -1,10 +1,5 @@
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
-import type {
-  Environment,
-  Feature,
-  PartialFeature,
-  RolloutRule,
-} from './optimizely-client-types';
+import type { Feature, PartialFeature } from './optimizely-client-types';
 
 export default class OptimizelyClient {
   private accessToken: string;
@@ -13,12 +8,6 @@ export default class OptimizelyClient {
   constructor(config: { accessToken: string; projectId: number }) {
     this.accessToken = config.accessToken;
     this.projectId = config.projectId;
-  }
-
-  static fineEveryoneRolloutRule(env: Environment): undefined | RolloutRule {
-    return env.rollout_rules.find(
-      (rule) => rule.audience_conditions === 'everyone',
-    );
   }
 
   fetchWithAuth(path: string, init?: RequestInit): Promise<Response> {
