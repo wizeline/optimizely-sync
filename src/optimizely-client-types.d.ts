@@ -7,7 +7,7 @@ export type Environment = {
 export type Feature = {
   archived: boolean;
   created: string;
-  description: string;
+  description?: string;
   environments: Record<string, Environment>;
   id: number;
   key: string;
