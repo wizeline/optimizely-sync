@@ -1,5 +1,9 @@
 import { difference, pluck } from 'ramda';
-import type { Feature } from './optimizely-client-types';
+import type {
+  Environment,
+  Feature,
+  RolloutRule,
+} from './optimizely-client-types';
 import type { OptimizelySyncConfig } from './optimizely-sync-types';
 
 export const getConfigFeatureKeys = (
@@ -34,4 +38,31 @@ export const findUnconfiguredFeatures = (
   );
 
   return difference(deployedFeatures, configFeatures);
+};
+
+export const findEveryoneRolloutRule = (
+  env: Environment,
+): undefined | RolloutRule => {
+  return env.rollout_rules.find(
+    (rule) => rule.audience_conditions === 'everyone',
+  );
+};
+
+export const transformOptimizelyFeaturesToSyncConfig = (
+  optimizelyFeatures: Feature[],
+): OptimizelySyncConfig => {
+  const config: OptimizelySyncConfig = optimizelyFeatures.reduce(
+    (acc: OptimizelySyncConfig, feature: Feature) => {
+      Object.entries(feature.environments).forEach(([envName, env]) => {
+        acc[envName] = acc[envName] || {};
+        acc[envName][feature.key] =
+          findEveryoneRolloutRule(env)?.percentage_included || 0;
+      });
+
+      return acc;
+    },
+    {} as OptimizelySyncConfig,
+  );
+
+  return config;
 };
