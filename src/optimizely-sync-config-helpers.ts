@@ -6,6 +6,29 @@ import type {
 } from './optimizely-client-types';
 import type { OptimizelySyncConfig } from './optimizely-sync-types';
 
+type ConfigDiff = Array<{
+  envName: string;
+  featureName: string;
+  leftValue: number;
+  rightValue: number;
+}>;
+export const compareConfigs = (
+  left: OptimizelySyncConfig,
+  right: OptimizelySyncConfig,
+): ConfigDiff => {
+  const differences: ConfigDiff = [];
+
+  Object.entries(left).forEach(([envName, features]) => {
+    Object.entries(features).forEach(([featureName, leftValue]) => {
+      const rightValue = right[envName]?.[featureName];
+      if (leftValue !== rightValue) {
+        differences.push({ envName, featureName, leftValue, rightValue });
+      }
+    });
+  });
+  return differences;
+};
+
 export const getConfigFeatureKeys = (
   config: OptimizelySyncConfig,
 ): string[][] => {

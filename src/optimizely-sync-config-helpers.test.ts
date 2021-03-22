@@ -1,4 +1,5 @@
 import {
+  compareConfigs,
   findEveryoneRolloutRule,
   findUnconfiguredFeatures,
   findUndeployedFeatures,
@@ -10,6 +11,66 @@ import type { Environment, Feature } from './optimizely-client-types';
 import type { OptimizelySyncConfig } from './optimizely-sync-types';
 
 describe('optimizely-sync-config-helpers', () => {
+  describe('compareConfigs', () => {
+    it('is a function', () => {
+      expect(typeof compareConfigs).toBe('function');
+    });
+    it('returns a list of differences', () => {
+      const config1: OptimizelySyncConfig = {
+        anEnvName: {
+          feature_1: 100,
+        },
+      };
+      const config2: OptimizelySyncConfig = {
+        anEnvName: {
+          feature_1: 200,
+        },
+      };
+      expect(compareConfigs(config1, config2)).toEqual([
+        {
+          envName: 'anEnvName',
+          featureName: 'feature_1',
+          leftValue: 100,
+          rightValue: 200,
+        },
+      ]);
+    });
+    it('works with configs with different environments', () => {
+      const config1: OptimizelySyncConfig = {
+        anEnvName: {
+          feature_1: 100,
+        },
+      };
+      const config2: OptimizelySyncConfig = {};
+      expect(compareConfigs(config1, config2)).toEqual([
+        {
+          envName: 'anEnvName',
+          featureName: 'feature_1',
+          leftValue: 100,
+          rightValue: undefined,
+        },
+      ]);
+    });
+    it('works with configs with different features', () => {
+      const config1: OptimizelySyncConfig = {
+        anEnvName: {
+          feature_1: 100,
+        },
+      };
+      const config2: OptimizelySyncConfig = {
+        anEnvName: {},
+      };
+      expect(compareConfigs(config1, config2)).toEqual([
+        {
+          envName: 'anEnvName',
+          featureName: 'feature_1',
+          leftValue: 100,
+          rightValue: undefined,
+        },
+      ]);
+    });
+  });
+
   describe('findEveryoneRolloutRule', () => {
     it('is a function', () => {
       expect(typeof findEveryoneRolloutRule).toBe('function');
