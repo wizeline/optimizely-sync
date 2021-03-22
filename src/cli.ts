@@ -11,6 +11,7 @@ import { validateConfig } from './optimizely-sync-config-validators';
 import {
   createFeatures,
   deleteFeatures,
+  detectChanges,
   persistFeatures,
 } from './optimizely-sync';
 
@@ -139,5 +140,9 @@ function readConfig(options: CliOptions): unknown {
 
   await createFeatures(options.dryRun, optimizelyClient, config, features);
   await deleteFeatures(options.dryRun, optimizelyClient, config, features);
-  await persistFeatures(options.dryRun, optimizelyClient, config, features);
+
+  const hasChanges = detectChanges(config, features);
+  if (hasChanges) {
+    await persistFeatures(options.dryRun, optimizelyClient, config, features);
+  }
 })();

@@ -1,8 +1,10 @@
 import type OptimizelyClient from './optimizely-client';
 
 import {
+  compareConfigs,
   findUnconfiguredFeatures,
   findUndeployedFeatures,
+  transformOptimizelyFeaturesToSyncConfig,
 } from './optimizely-sync-config-helpers';
 import { OptimizelySyncConfig } from './optimizely-sync-types';
 import { Feature } from './optimizely-client-types';
@@ -66,6 +68,26 @@ export async function deleteFeatures(
   }
 }
 
+export function detectChanges(
+  config: OptimizelySyncConfig,
+  features: Feature[],
+): boolean {
+  const deployedConfig = transformOptimizelyFeaturesToSyncConfig(features);
+  const configDiff = compareConfigs(config, deployedConfig);
+
+  if (configDiff.length === 0) {
+    console.log('No changes needed.');
+    return false;
+  }
+
+  console.log('Changes:');
+  configDiff.forEach(({ envName, featureName, leftValue, rightValue }) => {
+    console.log(
+      `  • Envinronment ${envName}'s "${featureName}" feature will change from "${rightValue}" to "${leftValue}"`,
+    );
+  });
+  return true;
+}
 export async function persistFeatures(
   dryRun: boolean,
   optimizelyClient: OptimizelyClient,
