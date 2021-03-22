@@ -1,3 +1,17 @@
+# [1.1.0](https://github.com/wizeline/optimizely-sync/compare/v1.0.2...v1.1.0) (2021-03-22)
+
+
+### Bug Fixes
+
+* fix Feature type to allow optional `description` ([5ba4168](https://github.com/wizeline/optimizely-sync/commit/5ba4168e73013990a07874b7ad7630b3813fc1fd))
+
+
+### Features
+
+* add compareConfigs helper method ([4554e46](https://github.com/wizeline/optimizely-sync/commit/4554e468bb4e7185fa214539aa32a4eb7b7c729d))
+* add transformOptimizelyFeaturesToSyncConfig function ([c46fdc9](https://github.com/wizeline/optimizely-sync/commit/c46fdc9344501d09ca41cf04f46eaa83bd031e2c))
+* console.log changes that will be persisted ([e921847](https://github.com/wizeline/optimizely-sync/commit/e92184747e5ddcad3e2d4750f58109c71336e56d))
+
 ## [1.0.2](https://github.com/wizeline/optimizely-sync/compare/v1.0.1...v1.0.2) (2021-03-15)
 
 
