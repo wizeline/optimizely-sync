@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/wizeline/optimizely-sync/compare/v1.1.0...v1.1.1) (2021-04-11)
+
+
+### Bug Fixes
+
+* fix invalid feature value error message ([a095f80](https://github.com/wizeline/optimizely-sync/commit/a095f80c99c681479298203a115d5a18da782ead))
+
 # [1.1.0](https://github.com/wizeline/optimizely-sync/compare/v1.0.2...v1.1.0) (2021-03-22)
 
 
