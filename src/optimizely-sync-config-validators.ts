@@ -38,7 +38,7 @@ function isOptimizelySyncConfig(
         featureValue > 10000
       ) {
         throw new Error(
-          'Feature values must be an integer between 0 and 1000 (inclusive).',
+          'Feature values must be an integer between 0 and 10,000 (inclusive).',
         );
       }
     });
