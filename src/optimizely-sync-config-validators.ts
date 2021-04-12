@@ -1,16 +1,7 @@
 import { equals } from 'ramda';
 import type { OptimizelySyncConfig } from './optimizely-sync-types';
 import { getConfigFeatureKeys } from './optimizely-sync-config-helpers';
-
-// Type guards
-function isObject(
-  maybeObject: unknown,
-): maybeObject is Record<string, unknown> {
-  return typeof maybeObject === 'object' && maybeObject !== null;
-}
-function isInteger(maybeNumber: unknown): maybeNumber is number {
-  return Number.isInteger(maybeNumber);
-}
+import { isInteger, isObject } from './type-guards';
 
 function isOptimizelySyncConfig(
   config: unknown,
