@@ -24,12 +24,15 @@ function isOptimizelySyncConfig(
     const featureValues = Object.values(envConfig);
     featureValues.forEach((featureValue) => {
       if (
-        !isInteger(featureValue) ||
-        featureValue < 0 ||
-        featureValue > 10000
+        !(
+          isInteger(featureValue) &&
+          featureValue >= 0 &&
+          featureValue <= 10000
+        ) &&
+        featureValue !== !!featureValue
       ) {
         throw new Error(
-          'Feature values must be an integer between 0 and 10,000 (inclusive).',
+          'Feature values must either be a boolean or an integer between 0 and 10,000 (inclusive).',
         );
       }
     });

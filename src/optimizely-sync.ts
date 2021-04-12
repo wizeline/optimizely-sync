@@ -8,6 +8,7 @@ import {
 } from './optimizely-sync-config-helpers';
 import { OptimizelySyncConfig } from './optimizely-sync-types';
 import { Feature } from './optimizely-client-types';
+import { isInteger } from './type-guards';
 
 export async function createFeatures(
   dryRun: boolean,
@@ -100,6 +101,15 @@ export async function persistFeatures(
       features.map((feature) => {
         const featureEnvConfig = Object.fromEntries(
           Object.keys(feature.environments).map((envName) => {
+            let percentage_included: number;
+
+            const featureValue = config[envName][feature.key];
+            if (isInteger(featureValue)) {
+              percentage_included = featureValue;
+            } else {
+              percentage_included = featureValue === false ? 0 : 10000;
+            }
+
             return [
               envName,
               {
@@ -107,7 +117,7 @@ export async function persistFeatures(
                   {
                     audience_conditions: 'everyone',
                     enabled: true,
-                    percentage_included: config[envName][feature.key],
+                    percentage_included,
                   },
                 ],
               },

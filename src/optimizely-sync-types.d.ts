@@ -1,4 +1,7 @@
-export type OptimizelySyncConfig = Record<string, Record<string, number>>;
+export type OptimizelySyncConfig = Record<
+  string,
+  Record<string, number | boolean>
+>;
 
 export type OptimizelySyncArgment = {
   accessToken: string;

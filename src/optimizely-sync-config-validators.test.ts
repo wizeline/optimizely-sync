@@ -9,7 +9,7 @@ describe('optimizely-sync-config-validators', () => {
     describe('invalid input validations', () => {
       const invalidConfigErrorSnapshot = `"Config must be of type Record<string, Record<string, number>>."`;
       const differentFeaturesErrorSnapshot = `"All environments don't have the same features."`;
-      const invalidFeatureValueErrorSnapshot = `"Feature values must be an integer between 0 and 10,000 (inclusive)."`;
+      const invalidFeatureValueErrorSnapshot = `"Feature values must either be a boolean or an integer between 0 and 10,000 (inclusive)."`;
 
       it('throws an error if number is passed', () => {
         expect(() => validateConfig(1)).toThrowErrorMatchingInlineSnapshot(
@@ -107,16 +107,6 @@ describe('optimizely-sync-config-validators', () => {
           invalidFeatureValueErrorSnapshot,
         );
       });
-
-      it('throws an error when passed feature is configured with a boolean', () => {
-        const config = {
-          dev: { featureOne: true },
-        };
-
-        expect(() => validateConfig(config)).toThrowErrorMatchingInlineSnapshot(
-          invalidFeatureValueErrorSnapshot,
-        );
-      });
     });
 
     describe('valid input validations', () => {
@@ -138,6 +128,13 @@ describe('optimizely-sync-config-validators', () => {
 
       it('accepts an object with two environments each with one feature', () => {
         const config = { dev: { featureOne: 10000 }, qa: { featureOne: 0 } };
+        expect(validateConfig(config)).toEqual(true);
+      });
+
+      it('accepts an object with a feature is configured with a boolean', () => {
+        const config = {
+          dev: { featureOne: true },
+        };
         expect(validateConfig(config)).toEqual(true);
       });
     });
