@@ -17,6 +17,8 @@ jobs:
       # Fetch the latest commit
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       # Setup Node.js using the appropriate version
       - name: Use Node.js ${{ matrix.node-version }}
@@ -39,6 +41,11 @@ jobs:
       # Run tests
       - name: Test
         run: npm test
+
+      # Ensure commit messages are in the correct format
+      - name: CommitLint
+        if: github.event.pull_request.base.ref == 'main'
+        run: npx commitlint -f origin/main
 
   release:
     # Only release on push to main
