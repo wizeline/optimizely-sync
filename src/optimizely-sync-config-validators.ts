@@ -1,16 +1,7 @@
 import { equals } from 'ramda';
 import type { OptimizelySyncConfig } from './optimizely-sync-types';
 import { getConfigFeatureKeys } from './optimizely-sync-config-helpers';
-
-// Type guards
-function isObject(
-  maybeObject: unknown,
-): maybeObject is Record<string, unknown> {
-  return typeof maybeObject === 'object' && maybeObject !== null;
-}
-function isInteger(maybeNumber: unknown): maybeNumber is number {
-  return Number.isInteger(maybeNumber);
-}
+import { isInteger, isObject } from './type-guards';
 
 function isOptimizelySyncConfig(
   config: unknown,
@@ -33,12 +24,15 @@ function isOptimizelySyncConfig(
     const featureValues = Object.values(envConfig);
     featureValues.forEach((featureValue) => {
       if (
-        !isInteger(featureValue) ||
-        featureValue < 0 ||
-        featureValue > 10000
+        !(
+          isInteger(featureValue) &&
+          featureValue >= 0 &&
+          featureValue <= 10000
+        ) &&
+        featureValue !== !!featureValue
       ) {
         throw new Error(
-          'Feature values must be an integer between 0 and 10,000 (inclusive).',
+          'Feature values must either be a boolean or an integer between 0 and 10,000 (inclusive).',
         );
       }
     });
