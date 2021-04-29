@@ -108,9 +108,44 @@ describe('optimizely-sync', () => {
         features,
       );
 
+      const expectedArg1: PartialFeature = {
+        key: 'someFeature',
+        environments: {
+          someEnv: {
+            rollout_rules: [
+              {
+                audience_conditions: 'everyone',
+                enabled: true,
+                percentage_included: 10000,
+              },
+            ],
+          },
+        },
+      };
+      const expectedArg2: PartialFeature = {
+        key: 'otherFeature',
+        environments: {
+          someEnv: {
+            rollout_rules: [
+              {
+                audience_conditions: 'everyone',
+                enabled: true,
+                percentage_included: 5000,
+              },
+            ],
+          },
+        },
+      };
+
       expect(consoleLog).toBeCalledTimes(2);
       // There are two features so it should run twice
       expect(mockedOptimizelyClient.createFeature).toBeCalledTimes(2);
+      expect(mockedOptimizelyClient.createFeature).toHaveBeenCalledWith(
+        expectedArg1,
+      );
+      expect(mockedOptimizelyClient.createFeature).toHaveBeenCalledWith(
+        expectedArg2,
+      );
 
       consoleLog.mockRestore();
     });
