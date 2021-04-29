@@ -6,6 +6,7 @@ import {
   getConfigFeatureKeys,
   getOptimizelyFeatureKeys,
   transformOptimizelyFeaturesToSyncConfig,
+  transformValueToRolloutRule,
 } from './optimizely-sync-config-helpers';
 import type { Environment, Feature } from './optimizely-client-types';
 import type { OptimizelySyncConfig } from './optimizely-sync-types';
@@ -274,6 +275,19 @@ describe('optimizely-sync-config-helpers', () => {
           feature_1: 0,
           feature_2: 0,
         },
+      });
+    });
+  });
+
+  describe('transformValueToRolloutRule', () => {
+    it('is a function', () => {
+      expect(typeof transformValueToRolloutRule).toBe('function');
+    });
+    it('returns an RolloutRule', () => {
+      expect(transformValueToRolloutRule(1234)).toEqual({
+        audience_conditions: 'everyone',
+        enabled: true,
+        percentage_included: 1234,
       });
     });
   });

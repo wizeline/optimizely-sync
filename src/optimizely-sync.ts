@@ -5,6 +5,7 @@ import {
   findUnconfiguredFeatures,
   findUndeployedFeatures,
   transformOptimizelyFeaturesToSyncConfig,
+  transformValueToRolloutRule,
 } from './optimizely-sync-config-helpers';
 import { OptimizelySyncConfig } from './optimizely-sync-types';
 import { Feature } from './optimizely-client-types';
@@ -105,11 +106,7 @@ export async function persistFeatures(
               envName,
               {
                 rollout_rules: [
-                  {
-                    audience_conditions: 'everyone',
-                    enabled: true,
-                    percentage_included: config[envName][feature.key],
-                  },
+                  transformValueToRolloutRule(config[envName][feature.key]),
                 ],
               },
             ];
