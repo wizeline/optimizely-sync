@@ -4,7 +4,7 @@ import {
   persistFeatures,
 } from './optimizely-sync';
 
-describe('optimizely-sync-config-validators', () => {
+describe('optimizely-sync', () => {
   describe('createFeatures', () => {
     it('is a function', () => {
       expect(typeof createFeatures).toBe('function');
