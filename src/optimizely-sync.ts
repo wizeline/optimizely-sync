@@ -88,6 +88,7 @@ export function detectChanges(
   });
   return true;
 }
+
 export async function persistFeatures(
   dryRun: boolean,
   optimizelyClient: OptimizelyClient,

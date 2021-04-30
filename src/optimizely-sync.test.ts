@@ -1,9 +1,10 @@
 import {
   createFeatures,
   deleteFeatures,
+  detectChanges,
   persistFeatures,
 } from './optimizely-sync';
-import type { PartialFeature } from './optimizely-client-types';
+import type { Feature, PartialFeature } from './optimizely-client-types';
 import type { OptimizelySyncConfig } from './optimizely-sync-types';
 
 describe('optimizely-sync', () => {
@@ -300,6 +301,127 @@ describe('optimizely-sync', () => {
         ]),
       );
       expect(mockedOptimizelyClient.deleteFeature).toBeCalledTimes(0);
+
+      consoleLog.mockRestore();
+    });
+  });
+
+  describe('detectChanges', () => {
+    it('is a function', () => {
+      expect(typeof detectChanges).toBe('function');
+    });
+
+    it('returns false when there are no changes - no features', () => {
+      const consoleLog = jest.spyOn(console, 'log').mockImplementation();
+
+      const config: OptimizelySyncConfig = {};
+      const features: Feature[] = [];
+
+      const returnValue = detectChanges(config, features);
+
+      expect(returnValue).toBe(false);
+
+      expect(consoleLog).toBeCalledTimes(1);
+      expect(consoleLog).toBeCalledWith('No changes needed.');
+
+      consoleLog.mockRestore();
+    });
+
+    it('returns false when there are no changes - one feature', () => {
+      const consoleLog = jest.spyOn(console, 'log').mockImplementation();
+
+      const config: OptimizelySyncConfig = {
+        dev: {
+          feature1: 10000,
+        },
+      };
+      const features: PartialFeature[] = [
+        {
+          key: 'feature1',
+          environments: {
+            dev: {
+              rollout_rules: [
+                {
+                  audience_conditions: 'everyone',
+                  enabled: true,
+                  percentage_included: 10000,
+                },
+              ],
+            },
+          },
+        },
+      ];
+
+      const returnValue = detectChanges(
+        config,
+        // @ts-expect-error -- intentionally passing a PartialFeature[]
+        features,
+      );
+
+      expect(returnValue).toBe(false);
+
+      expect(consoleLog).toBeCalledTimes(1);
+      expect(consoleLog).toBeCalledWith('No changes needed.');
+
+      consoleLog.mockRestore();
+    });
+
+    it('returns true when there are changes', () => {
+      const consoleLog = jest.spyOn(console, 'log').mockImplementation();
+
+      const config: OptimizelySyncConfig = {
+        dev: {
+          feature1: 1000,
+          feature2: 2000,
+        },
+      };
+      const features: PartialFeature[] = [
+        {
+          key: 'feature1',
+          environments: {
+            dev: {
+              rollout_rules: [
+                {
+                  audience_conditions: 'everyone',
+                  enabled: true,
+                  percentage_included: 3000,
+                },
+              ],
+            },
+          },
+        },
+        {
+          key: 'feature2',
+          environments: {
+            dev: {
+              rollout_rules: [
+                {
+                  audience_conditions: 'everyone',
+                  enabled: true,
+                  percentage_included: 4000,
+                },
+              ],
+            },
+          },
+        },
+      ];
+
+      const returnValue = detectChanges(
+        config,
+        // @ts-expect-error -- intentionally passing a PartialFeature[]
+        features,
+      );
+
+      expect(returnValue).toBe(true);
+
+      // Once for the "Changes, and once for each change"
+      expect(consoleLog).toBeCalledTimes(3);
+      expect(consoleLog).toBeCalledWith(
+        '  • Envinronment dev\'s "feature1" feature will change from "3000" to "1000"',
+      );
+      expect(consoleLog).toBeCalledWith(
+        '  • Envinronment dev\'s "feature2" feature will change from "4000" to "2000"',
+      );
 
       consoleLog.mockRestore();
     });
