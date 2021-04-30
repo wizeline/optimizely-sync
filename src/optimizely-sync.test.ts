@@ -431,5 +431,89 @@ describe('optimizely-sync', () => {
     it('is a function', () => {
       expect(typeof persistFeatures).toBe('function');
     });
+
+    it('does nothing when dryRun is true', async () => {
+      const consoleLog = jest.spyOn(console, 'log').mockImplementation();
+
+      const dryRun = true;
+      const mockedOptimizelyClient = {
+        updateFeature: jest.fn(),
+      };
+      const config: OptimizelySyncConfig = {};
+      const features: Feature[] = [];
+
+      await persistFeatures(
+        dryRun,
+        // @ts-expect-error -- intentionally passing a partial OptimizelyConfig
+        mockedOptimizelyClient,
+        config,
+        features,
+      );
+
+      expect(consoleLog).toBeCalledTimes(0);
+      expect(mockedOptimizelyClient.updateFeature).toBeCalledTimes(0);
+
+      consoleLog.mockRestore();
+    });
+
+    it('logs and executes dryRun is false', async () => {
+      const consoleLog = jest.spyOn(console, 'log').mockImplementation();
+
+      const dryRun = false;
+      const mockedOptimizelyClient = {
+        updateFeature: jest.fn(),
+      };
+      const config: OptimizelySyncConfig = {
+        dev: {
+          feature1: 1000,
+          feature2: 2000,
+        },
+      };
+      const features: PartialFeature[] = [
+        {
+          key: 'feature1',
+          environments: {
+            dev: {
+              rollout_rules: [
+                {
+                  audience_conditions: 'everyone',
+                  enabled: true,
+                  percentage_included: 3000,
+                },
+              ],
+            },
+          },
+        },
+        {
+          key: 'feature2',
+          environments: {
+            dev: {
+              rollout_rules: [
+                {
+                  audience_conditions: 'everyone',
+                  enabled: true,
+                  percentage_included: 4000,
+                },
+              ],
+            },
+          },
+        },
+      ];
+
+      await persistFeatures(
+        dryRun,
+        // @ts-expect-error -- intentionally passing a partial OptimizelyConfig
+        mockedOptimizelyClient,
+        config,
+        features,
+      );
+
+      // Once for the persisting notificaiton and once for the results
+      expect(consoleLog).toBeCalledTimes(2);
+      // Once for each feature being updated
+      expect(mockedOptimizelyClient.updateFeature).toBeCalledTimes(2);
+
+      consoleLog.mockRestore();
+    });
   });
 });
