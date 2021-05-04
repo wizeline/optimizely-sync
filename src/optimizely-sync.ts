@@ -5,9 +5,10 @@ import {
   findUnconfiguredFeatures,
   findUndeployedFeatures,
   transformOptimizelyFeaturesToSyncConfig,
+  transformValueToRolloutRule,
 } from './optimizely-sync-config-helpers';
 import { OptimizelySyncConfig } from './optimizely-sync-types';
-import { Feature } from './optimizely-client-types';
+import { Feature, PartialFeature } from './optimizely-client-types';
 
 export async function createFeatures(
   dryRun: boolean,
@@ -26,11 +27,25 @@ export async function createFeatures(
         `Creating the following features: ${featureToCreate.join(', ')}`,
       );
       const createFeatureResults = await Promise.allSettled(
-        featureToCreate.map((key) =>
-          optimizelyClient.createFeature({
+        featureToCreate.map((key) => {
+          const desiredFeature: PartialFeature = {
             key,
-          }),
-        ),
+            environments: Object.fromEntries(
+              Object.entries(config).map(([envName, envConfig]) => {
+                return [
+                  envName,
+                  {
+                    rollout_rules: [
+                      transformValueToRolloutRule(envConfig[key]),
+                    ],
+                  },
+                ];
+              }),
+            ),
+          };
+
+          return optimizelyClient.createFeature(desiredFeature);
+        }),
       );
       console.log(createFeatureResults);
     }
@@ -105,11 +120,7 @@ export async function persistFeatures(
               envName,
               {
                 rollout_rules: [
-                  {
-                    audience_conditions: 'everyone',
-                    enabled: true,
-                    percentage_included: config[envName][feature.key],
-                  },
+                  transformValueToRolloutRule(config[envName][feature.key]),
                 ],
               },
             ];

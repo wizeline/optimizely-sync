@@ -89,3 +89,11 @@ export const transformOptimizelyFeaturesToSyncConfig = (
 
   return config;
 };
+
+export const transformValueToRolloutRule = (value: number): RolloutRule => {
+  return {
+    audience_conditions: 'everyone',
+    enabled: true,
+    percentage_included: value,
+  };
+};
