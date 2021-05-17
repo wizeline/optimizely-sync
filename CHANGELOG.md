@@ -1,3 +1,15 @@
+# [1.2.0](https://github.com/wizeline/optimizely-sync/compare/v1.1.1...v1.2.0) (2021-05-17)
+
+
+### Bug Fixes
+
+* configure env values when creating a feature ([7dae7ce](https://github.com/wizeline/optimizely-sync/commit/7dae7ce40e7e3b8c01df170d99d332b95b492a7f)), closes [#14](https://github.com/wizeline/optimizely-sync/issues/14)
+
+
+### Features
+
+* add `transformValueToRolloutRule` helper ([8cc3924](https://github.com/wizeline/optimizely-sync/commit/8cc39248f0eb1b50a94e15406a1f891a3381ecfe))
+
 ## [1.1.1](https://github.com/wizeline/optimizely-sync/compare/v1.1.0...v1.1.1) (2021-04-11)
 
 
